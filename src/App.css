@@ -1,38 +1,319 @@
+body {
+  font-family: roman;
+ background-color: #ebedef;
+  color: #333;
+  margin: 0;
+  padding: 0;
+}
+
 .App {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px;
+  background-image: url("C:\Users\edimo\Festina\food.jpg");
+  background-repeat: no-repeat;
+  background-size: cover ; 
+  background-position: center;
+  border-radius: 5px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  border: 2px solid #EDF6FE; 
+  position: relative;
+  overflow: hidden;
+  
+}
+
+
+.all-inputs {
+  border: 2px solid #F1BB6C;
+  text-align: center;
+  margin-top: 100px;
+  width: 700px;
+  
+}
+.all-inputs2 {
+  border: 2px solid #333;
+  text-align: center;
+  margin: 7px;
+  width: 700px;
+  
+}
+label {
+  display: block;
+  margin: 10px 0;
+}
+
+input[type="number"], input[type="text"], input[type="checkbox"] {
+  margin-left: 10px;
+  padding: 5px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+input[type="text"]{
+  margin-top: 7px;
+  margin-bottom: 15px;
+  
+}
+
+.reset-button {
+  margin-left: 350px;
+  padding: 10px 20px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  cursor: pointer;
+  margin-top: 20px;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+.reset-button:hover {
+  background-color: #45a049;
+}
+
+
+.persons-slices-container {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  margin: 20px 0;
+}
+
+.person-slices {
+  text-align: center;
+  margin: 10px;
+  display: block;
+}
+
+.slice-enter {
+  opacity: 0;
+  transform: scale(0.9);
+}
+.slice-enter-active {
+  opacity: 1;
+  transform: scale(1);
+  transition: opacity 500ms, transform 500ms;
+}
+.slice-exit {
+  opacity: 1;
+}
+.slice-exit-active {
+  opacity: 0;
+  transition: opacity 500ms;
+}
+
+.analysis {
+  margin: 20px 0;
+  padding: 20px;
+  border: 2px solid #ccc;
+  border-radius: 10px;
+  background-color: #fff; 
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.analysis h3 {
+  font-size: 1.8rem;
+  margin-bottom: 15px;
+  color: #333; 
+}
+
+.analysis .metric {
+  margin-bottom: 20px;
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #f4f4f4; /* Light gray background */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease-in-out;
+}
+
+.analysis .metric:hover {
+  transform: translateY(-5px) scale(1.02);
+}
+
+.analysis .metric h4 {
+  font-size: 1.4rem;
+  margin-bottom: 10px;
+  color: #555; 
+}
+
+.analysis .metric p {
+  font-size: 1.2rem;
+  line-height: 1.6;
+  color: #777; 
+}
+
+.analysis .metric p strong {
+  font-weight: bold;
+  color: #333; 
+}
+
+.pizza-chart{
+  margin-left: 100px;
+  display: flex;
+  align-items: center;
+  gap: 100px;
+  margin-left: 150px;
+  margin-top: 15px; 
+}
+
+.pizza-chart path {
+  transition: fill 0.3s ease-in-out;
+}
+
+.costs-container {
+  display: flex;
+  flex-wrap: wrap; 
+  gap: 150px; 
+  margin-right: 30;
+}
+
+
+.inline-inputs {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-left: 150px;
+  margin-top: 15px; 
+}
+
+.inline-inputs label {
+  display: flex;
+  align-items: center;  
+
+}
+
+.inline-inputs input {
+  margin-left: 5px;
+  width: 50px;
+}
+
+.title {
+  color: #F58220;
+}
+
+
+h3{
+  color: white;
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+select{
+  padding: 5px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  margin-left: 10px;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.pizza-size-style{
+  border-top: 3px solid #333;
+  border-bottom: 3px solid #333;
+  padding: 3px;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+.teksti{
+ font-size: 20px; 
+ font-weight: normal;
+ margin-left: -20%;
+}
+
+
+.title-container {
+  text-align: center; 
+  margin-top: 60px; 
+  margin-right: 60%;
+}
+
+.game-title {
+  font-size: 3.5rem;
+  text-shadow: 2px 2px 4px rgba(241, 187, 108, 0.8); 
+  letter-spacing: 3px; 
+  margin: 20px 0;
+}
+
+.game-title::before,
+.game-title::after {
+  content: '';
+  display: block;
+  width: 50%; 
+  height: 2px;
+  background-color: #F1BB6C;
+  margin: 0 auto 10px; 
+}
+
+.game-title:hover {
+  color: #F1BB6C; 
+  transform: scale(1.05); 
+}
+
+.divide-button {
+  padding: 10px 20px;
+  background-color: #4CAF50;
   color: white;
+  border: none;
+  cursor: pointer;
+  margin-bottom: 20px;
+  border-radius: 5px;
+  font-size: 16px;
 }
 
-.App-link {
-  color: #61dafb;
+.divide-button:hover {
+  background-color: #45a049;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+
+.info-icon {
+  font-size: 24px;
+  cursor: pointer;
+  position: absolute;
+  top: 600px;
+  right: 800px;
+
+}
+
+.popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.popup-content {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  max-width: 80%;
+  max-height: 80%;
+  overflow: auto;
+  font-family: roman;
+  position: relative;
+}
+
+.close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+  font-size: 24px;
+}
+
+.info-icon:hover::after {
+  content: "instructions";
+  display: block;
+  position: absolute;
+  top: calc(100% + 5px); 
+  right: 50%;
+  transform: translateX(50%);
+  background-color: #f4f4f4; 
+  color: #333;
+  font-size: 15px; 
+  padding: 5px;
+  border-radius: 3px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  z-index: 9999;
 }
