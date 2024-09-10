@@ -557,8 +557,8 @@ const handleInputChange = (e) => {
 
   const handleNamesChange = (index, value) => {
     const updatedNames = [...names];
-    updatedNames[index] = value;
-    setNames(updatedNames);
+    updatedNames[index] = capitalizeFirstLetter(value); 
+    setNames(updatedNames); 
   };
 
   const calculateCostsPerPerson = () => {
@@ -581,14 +581,27 @@ const handleInputChange = (e) => {
     setCostsPerPerson(costs);
   };
 
+  const capitalizeFirstLetter = (string) => {
+    if (!string) return "";
+    return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
+  };
+  
   const toggleCustomNames = () => {
     setCustomNames(!customNames);
+  
     if (!customNames) {
       setNames(new Array(persons).fill(null));
     } else {
-      setNames([]);
+      setNames(names.map((name) => capitalizeFirstLetter(name)));
     }
   };
+  
+  const handleNameChange = (index, value) => {
+    const updatedNames = [...names];
+    updatedNames[index] = capitalizeFirstLetter(value);
+    setNames(updatedNames);
+  };
+  
 
   const redistributeSlices = () => {
     const initialSlicesTaken = {};
@@ -650,6 +663,7 @@ const handleInputChange = (e) => {
                 type="checkbox"
                 checked={customNames}
                 onChange={toggleCustomNames}
+                
               />
               <span className="custom-checkbox"></span>
             </label>
@@ -661,8 +675,8 @@ const handleInputChange = (e) => {
                     type="text"
                     placeholder={`Person ${i + 1}`}
                     value={names[i] || ""}
-                    onChange={(e) => handleNamesChange(i, e.target.value)}
-                  />
+                    onChange={(e) => handleNamesChange(i, e.target.value)} 
+                    />
                 ))}
               </div>
             )}
