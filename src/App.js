@@ -86,6 +86,7 @@ function App() {
 
   const handleInputType = (e) => {
     setInputType(e.target.value);
+    redistributeSlices();
   };
 
   const pizzaPrices = {
@@ -209,19 +210,19 @@ function App() {
 const handleInputChange = (e) => {
   const { name, value } = e.target;
   const sliceUnit = inputType === 'degrees' ? 360 : 100;
-  let newPersons = persons; // Initialize these at the top
+
+  let newPersons = persons;
   let newSlicesPerson = slicesPerPerson;
 
   setErrorMessage(''); 
   if (name === "persons") {
-    let newPersons = parseInt(value);
+    newPersons = parseInt(value);
     if (!isNaN(newPersons) && newPersons > 0) {
       const totalSlices = newPersons * slicesPerPerson;
 
-      
       if (totalSlices > 24) {
         setErrorMessage("The maximum number of slices (24) has been reached.");
-        newPersons = Math.floor(24 / slicesPerPerson); // Adjust persons to stay within the limit
+        newPersons = Math.floor(24 / slicesPerPerson); 
       }
 
       setPersons(newPersons);
@@ -231,18 +232,17 @@ const handleInputChange = (e) => {
         )
       );
     } else {
-      setPersons(0);
-      setAllSlices([]);
+      setErrorMessage("Number of persons cannot be empty or 0.");
+      setPersons(1); 
     }
   } else if (name === "slices") {
-    let newSlicesPerson = parseInt(value);
+    newSlicesPerson = parseInt(value);
     if (!isNaN(newSlicesPerson) && newSlicesPerson > 0) {
       const totalSlices = persons * newSlicesPerson;
 
-  
       if (totalSlices > 24) {
         setErrorMessage("The maximum number of slices (24) has been reached.");
-        newPersons = Math.floor(24 / persons); // Adjust persons to stay within the limit
+        newSlicesPerson = Math.floor(24 / persons); 
       }
 
       setSlicesPerPerson(newSlicesPerson);
@@ -252,14 +252,13 @@ const handleInputChange = (e) => {
         )
       );
     } else {
-      setSlicesPerPerson(0);
-      setAllSlices([]);
+      setErrorMessage("Slices per person cannot be empty or 0.");
+      setSlicesPerPerson(1);
     }
   }
 
   redistributeSlices();
 };
-
 
   const getPizzaDimensions = () => {
     const totalSlices = persons * slicesPerPerson;
@@ -605,6 +604,7 @@ const handleInputChange = (e) => {
   const handleSelectPizza = (e) => {
     setSelectedPizza(e.target.value);
     redistributeSlices();
+
   };
   return (
     <div className="App">
@@ -627,7 +627,7 @@ const handleInputChange = (e) => {
                   name="persons"
                   value={persons}
                   onChange={handleInputChange}
-                  min={1}
+                  min={2}
                 />
               </label>
               <label>
@@ -850,7 +850,7 @@ const handleInputChange = (e) => {
           </p>
         </div>
         <div className="metric">
-          <h4>Fairness Metrics:</h4>
+          <h4>Fairness Metrics </h4>
           <p>
             <strong>Mean:</strong>{" "}
             {fairnessMetrics.mean ? fairnessMetrics.mean.toFixed(2) : " "}
