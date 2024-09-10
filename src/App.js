@@ -18,6 +18,8 @@ function App() {
   const [inputType, setInputType] = useState("degrees");
   const [inputValues, setInputValues] = useState("");
   const [error, setError] = useState("");
+  const [errorMessage, setErrorMessage] = useState('');
+
 
   const [showPopup, setShowPopup] = useState(false);
 
@@ -55,7 +57,7 @@ function App() {
 
     const expectedCount = persons * slicesPerPerson;
     if (values.length !== expectedCount) {
-      setError(`Invalid input. Expected ${expectedCount} values.`);
+      setError(`Invalid input. Expected ${expectedCount} values, but got ${values.length}.`);
       return;
     }
 
@@ -204,40 +206,60 @@ function App() {
 };
 
 
+const handleInputChange = (e) => {
+  const { name, value } = e.target;
+  const sliceUnit = inputType === 'degrees' ? 360 : 100;
+  let newPersons = persons; // Initialize these at the top
+  let newSlicesPerson = slicesPerPerson;
 
+  setErrorMessage(''); 
+  if (name === "persons") {
+    let newPersons = parseInt(value);
+    if (!isNaN(newPersons) && newPersons > 0) {
+      const totalSlices = newPersons * slicesPerPerson;
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    if (name === "persons") {
-      const newPersons = parseInt(value);
-      const sliceUnit = inputType === 'degrees' ? 360 : 100;
-      if (!isNaN(newPersons) && newPersons > 0) {
-        setPersons(newPersons);
-        setAllSlices(
-          new Array(newPersons * slicesPerPerson).fill(
-            sliceUnit / (newPersons * slicesPerPerson)
-          )
-        );
-      } else {
-        setPersons(0);
-        setAllSlices([]);
+      
+      if (totalSlices > 24) {
+        setErrorMessage("The maximum number of slices (24) has been reached.");
+        newPersons = Math.floor(24 / slicesPerPerson); // Adjust persons to stay within the limit
       }
-    } else if (name === "slices") {
-      const newSlicesPerson = parseInt(value);
-      if (!isNaN(newSlicesPerson) && newSlicesPerson > 0) {
-        setSlicesPerPerson(newSlicesPerson);
-        setAllSlices(
-          new Array(persons * newSlicesPerson).fill(
-            100 / (persons * newSlicesPerson)
-          )
-        );
-      } else {
-        setSlicesPerPerson(0);
-        setAllSlices([]);
-      }
+
+      setPersons(newPersons);
+      setAllSlices(
+        new Array(newPersons * slicesPerPerson).fill(
+          sliceUnit / (newPersons * slicesPerPerson)
+        )
+      );
+    } else {
+      setPersons(0);
+      setAllSlices([]);
     }
-    redistributeSlices();
-  };
+  } else if (name === "slices") {
+    let newSlicesPerson = parseInt(value);
+    if (!isNaN(newSlicesPerson) && newSlicesPerson > 0) {
+      const totalSlices = persons * newSlicesPerson;
+
+  
+      if (totalSlices > 24) {
+        setErrorMessage("The maximum number of slices (24) has been reached.");
+        newPersons = Math.floor(24 / persons); // Adjust persons to stay within the limit
+      }
+
+      setSlicesPerPerson(newSlicesPerson);
+      setAllSlices(
+        new Array(persons * newSlicesPerson).fill(
+          sliceUnit / (persons * newSlicesPerson)
+        )
+      );
+    } else {
+      setSlicesPerPerson(0);
+      setAllSlices([]);
+    }
+  }
+
+  redistributeSlices();
+};
+
 
   const getPizzaDimensions = () => {
     const totalSlices = persons * slicesPerPerson;
@@ -590,7 +612,7 @@ function App() {
         <h1 className="game-title">Slice it Right</h1>
       </div>
       <div className="info-icon" onClick={togglePopup}>
-        Game's instructions<div class="tooltip"> &#x1F6C8; 
+        Game's instructions <div class="tooltip">  &#x1F6C8; 
         </div>
         </div> 
 
@@ -619,6 +641,7 @@ function App() {
                 />
               </label>
             </div>
+            {errorMessage && <div className="error-message">{errorMessage}</div>}
           </div>
           <div className="left">
             <label className="checkbox-label">
@@ -838,7 +861,11 @@ function App() {
           </p>
           <p>
             <strong>Standard Deviation:</strong>{" "}
-            {fairnessMetrics.stdDev ? fairnessMetrics.stdDev.toFixed(2) : " "}
+            {(fairnessMetrics.stdDev === null || fairnessMetrics.stdDev === undefined || isNaN(fairnessMetrics.stdDev))
+                   ? " " 
+                   : fairnessMetrics.stdDev === 0
+                   ? "0.00"
+                   : fairnessMetrics.stdDev.toFixed(2)}
             <br />
             <strong>Description:</strong> The standard deviation measures how
             much the slice sizes deviate from the mean. Lower values indicate a
