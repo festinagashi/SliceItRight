@@ -214,15 +214,20 @@ const handleInputChange = (e) => {
   let newPersons = persons;
   let newSlicesPerson = slicesPerPerson;
 
-  setErrorMessage(''); 
+  setErrorMessage('');
+
   if (name === "persons") {
     newPersons = parseInt(value);
-    if (!isNaN(newPersons) && newPersons > 0) {
+    
+    if (value === "" || newPersons <= 0) {
+      setErrorMessage("Number of persons cannot be empty or 0.");
+      setPersons(value); 
+    } else {
       const totalSlices = newPersons * slicesPerPerson;
-
+      
       if (totalSlices > 24) {
         setErrorMessage("The maximum number of slices (24) has been reached.");
-        newPersons = Math.floor(24 / slicesPerPerson); 
+        newPersons = Math.floor(24 / slicesPerPerson);
       }
 
       setPersons(newPersons);
@@ -231,15 +236,16 @@ const handleInputChange = (e) => {
           sliceUnit / (newPersons * slicesPerPerson)
         )
       );
-    } else {
-      setErrorMessage("Number of persons cannot be empty or 0.");
-      setPersons(1); 
     }
   } else if (name === "slices") {
     newSlicesPerson = parseInt(value);
-    if (!isNaN(newSlicesPerson) && newSlicesPerson > 0) {
+    
+    if (value === "" || newSlicesPerson <= 0) {
+      setErrorMessage("Slices per person cannot be empty or 0.");
+      setSlicesPerPerson(value); 
+    } else {
       const totalSlices = persons * newSlicesPerson;
-
+      
       if (totalSlices > 24) {
         setErrorMessage("The maximum number of slices (24) has been reached.");
         newSlicesPerson = Math.floor(24 / persons); 
@@ -251,9 +257,6 @@ const handleInputChange = (e) => {
           sliceUnit / (persons * newSlicesPerson)
         )
       );
-    } else {
-      setErrorMessage("Slices per person cannot be empty or 0.");
-      setSlicesPerPerson(1);
     }
   }
 
@@ -640,7 +643,7 @@ const handleInputChange = (e) => {
                   name="persons"
                   value={persons}
                   onChange={handleInputChange}
-                  min={2}
+                  min={0}
                 />
               </label>
               <label>
@@ -650,7 +653,7 @@ const handleInputChange = (e) => {
                   name="slices"
                   value={slicesPerPerson}
                   onChange={handleInputChange}
-                  min={1}
+                  min={0}
                 />
               </label>
             </div>
