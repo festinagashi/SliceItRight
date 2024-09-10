@@ -26,7 +26,7 @@ body {
 .all-inputs {
   border: 2px solid #F1BB6C;
   text-align: center;
-  margin-top: 100px;
+  margin-top: 5px;
   width: 700px;
   
 }
@@ -262,12 +262,11 @@ select{
 
 
 .info-icon {
-  font-size: 24px;
   cursor: pointer;
-  position: absolute;
-  top: 600px;
-  right: 800px;
-
+  font-family: roman;
+  font-size: 16px;
+  text-decoration: none;   
+  margin-top: 90px;        
 }
 
 .popup {
@@ -316,4 +315,24 @@ select{
   border-radius: 3px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   z-index: 9999;
+}
+.tooltip {
+  position: relative;
+  display: inline-block;
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 120px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+  position: absolute;
+  z-index: 1;
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
 }

@@ -112,12 +112,18 @@ function App() {
   };
 
   const generateAllSlices = () => {
+    if (!persons || !slicesPerPerson) return []; 
     const totalSlices = persons * slicesPerPerson;
-    const slicePercentage = 100 / totalSlices;
+    const sliceUnit = inputType === 'degrees' ? 360 : 100;
+    const slicePercentage = sliceUnit / totalSlices;
     return new Array(totalSlices).fill(slicePercentage);
-  };
+};
 
   const [allSlices, setAllSlices] = useState(generateAllSlices());
+  useEffect(() => {
+    setAllSlices(generateAllSlices());
+    setSlicesTaken(initializeSlicesTaken(persons * slicesPerPerson));
+}, [persons, slicesPerPerson]);
 
   const initializeSlicesTaken = (totalSlices) => {
     const slices = {};
@@ -126,8 +132,9 @@ function App() {
     }
     return slices;
   };
-  // Initialize when starting
-  const [slicesTaken, setSlicesTaken] = useState(initializeSlicesTaken(allSlices.length));
+  
+  const totalSlices = persons * slicesPerPerson;
+  const [slicesTaken, setSlicesTaken] = useState(initializeSlicesTaken(totalSlices));
   
 
   useEffect(() => {
@@ -152,7 +159,6 @@ function App() {
       setCurrentPerson(1);
     }
   };
-
   const assignSlices = (newSlicesTaken, selectedSlice) => {
     let remainingPersons = persons - 1;
     let currentIndex = selectedSlice;
@@ -165,35 +171,51 @@ function App() {
         const direction = nextPerson % 2 === 0 ? -1 : 1;
         let nextIndex = (currentIndex + direction + allSlices.length) % allSlices.length;
 
-        console.log(newSlicesTaken, nextIndex, newSlicesTaken[nextIndex]);
-
-        for (; newSlicesTaken[nextIndex] !== null;) {
+        let steps = 0; 
+        while (newSlicesTaken[nextIndex] !== null && steps < allSlices.length) {
             nextIndex = (nextIndex + direction + allSlices.length) % allSlices.length;
+            steps++;
+            if (steps >= allSlices.length) {
+                console.error('No available slices found, stopping assignment.');
+                remainingPersons = 0; 
+                break;
+            }
         }
 
-        newSlicesTaken[nextIndex] = nextPerson;
-        newPersonSlices[nextPerson] = [
-            ...(newPersonSlices[nextPerson] || []),
-            nextIndex,
-        ];
-        nextPerson = (nextPerson % persons) + 1;
+        if (newSlicesTaken[nextIndex] === null && steps < allSlices.length) {
+            newSlicesTaken[nextIndex] = nextPerson;
+            newPersonSlices[nextPerson] = [
+                ...(newPersonSlices[nextPerson] || []),
+                nextIndex,
+            ];
+
+        }
+
+        nextPerson++;
         currentIndex = nextIndex;
+
+        if (nextPerson > persons) {
+            break;
+        }
     }
 
     setSlicesTaken(newSlicesTaken);
     setPersonSlices(newPersonSlices);
 };
 
+
+
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     if (name === "persons") {
       const newPersons = parseInt(value);
-      console.log("new persons added" + newPersons);
+      const sliceUnit = inputType === 'degrees' ? 360 : 100;
       if (!isNaN(newPersons) && newPersons > 0) {
         setPersons(newPersons);
         setAllSlices(
           new Array(newPersons * slicesPerPerson).fill(
-            100 / (newPersons * slicesPerPerson)
+            sliceUnit / (newPersons * slicesPerPerson)
           )
         );
       } else {
@@ -230,7 +252,6 @@ function App() {
   const renderPizzaChart = () => {
     const { width, height } = getPizzaDimensions();
     const totalValue = inputType === "degrees" ? 360 : 100;
-    const totalSlices = allSlices.length;
 
     let startAngle = 0;
     const pizzaSlices = allSlices.map((slice, index) => {
@@ -568,6 +589,11 @@ function App() {
       <div className="title-container">
         <h1 className="game-title">Slice it Right</h1>
       </div>
+      <div className="info-icon" onClick={togglePopup}>
+       <div class="tooltip"> &#x1F6C8; 
+      </div> Game's instructions
+        </div> 
+
       <div className="all-inputs">
         <div className="all-inputs2">
           <div className="input-section">
@@ -786,9 +812,7 @@ function App() {
         <button onClick={redistributeSlices} className="reset-button">
           Reset the taken slices
         </button>
-        <div className="info-icon" onClick={togglePopup}>
-          testt
-        </div>
+      
       </div>
       <div className="analysis">
         <h3>🍕 Pizza Distribution Analysis 📊</h3>
