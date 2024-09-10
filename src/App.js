@@ -590,8 +590,8 @@ function App() {
         <h1 className="game-title">Slice it Right</h1>
       </div>
       <div className="info-icon" onClick={togglePopup}>
-       <div class="tooltip"> &#x1F6C8; 
-      </div> Game's instructions
+        Game's instructions<div class="tooltip"> &#x1F6C8; 
+        </div>
         </div> 
 
       <div className="all-inputs">
