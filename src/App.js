@@ -695,7 +695,7 @@ const handleInputChange = (e) => {
           </div>
           <div>
             <label>
-              The pizza is divide into equal parts. You can customize it by
+              The pizza is divided into equal parts. You can customize it by
               specifying the sizes of {persons * slicesPerPerson} slices.
               <br></br>
               <select onChange={handleInputType}>
@@ -911,24 +911,21 @@ const handleInputChange = (e) => {
               </li>
               <li>Enter the sizes for each slice separated by commas.</li>
               <li>
-                Click "Divide Pizza" to distribute the slices among the selected
-                number of persons.{" "}
+                Click "Divide Pizza" to split the pizza slices based on the size you set.{" "}
               </li>
             </ul>
             <br></br>
             <b>Interaction:</b>
-            <p>
+            <p>Select any available slice by clicking on it
               <ul>
+              
+                  {" "}
                 <li>
                   {" "}
-                  Click on any available slice<br></br>
-                </li>
-                <li>
-                  {" "}
-                  This part you choose will be assigned to the first person,
+                  The slice you choose will be assigned to the first person
                   <br></br>
                 </li>
-                <li> Then the game follows a rule which is:</li>
+                <li> The slices are then distributed to the other participants according to the following rule:</li>
                 <ol>
                   <li>
                     Even persons will take the free slice on the
@@ -939,6 +936,7 @@ const handleInputChange = (e) => {
                   </li>
                 </ol>
               </ul>
+              The first person can keep choosing until there are no more free slices.
             </p>
             <br></br>
 
